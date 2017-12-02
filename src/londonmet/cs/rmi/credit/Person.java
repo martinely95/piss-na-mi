@@ -10,7 +10,7 @@ public class Person implements java.io.Serializable {
     private String secondName;
     private boolean creditRating;
 
-    private Double balance;
+    private double balance;
 
     public Person(String firstName, String secondName, boolean creditRating, Double balance) {
         this.firstName = firstName;
@@ -30,12 +30,12 @@ public class Person implements java.io.Serializable {
         this.creditRating = creditRating;
     }
 
-    public Double getBalance() {
-        return balance;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public double getBalance() {
+        return balance;
     }
 
     public String getFirstName() {

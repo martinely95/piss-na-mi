@@ -17,6 +17,18 @@ public class CreditCheckerImpl extends UnicastRemoteObject
     public CreditCheckerImpl() throws RemoteException {
     }
 
+    public Person deposit(Person person, double amount)
+            throws RemoteException {
+        person.setBalance(person.getBalance() + amount);
+        return person;
+    }
+
+
+    public Person withdrawal(Person person, double amount) throws RemoteException {
+        person.setBalance(person.getBalance() - amount);
+        return person;
+    }
+
     public boolean isOkay(Person person)
             throws RemoteException {
         return person.getCreditRating();
