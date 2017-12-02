@@ -71,6 +71,6 @@ public class CreditCheckerClient {
     }
 
     private static CreditChecker getLookup() throws RemoteException, NotBoundException {
-        return (CreditChecker) registry.lookup(CreditChecker.NAME);
+         return (CreditChecker) registry.lookup(CreditChecker.NAME);
     }
 }
