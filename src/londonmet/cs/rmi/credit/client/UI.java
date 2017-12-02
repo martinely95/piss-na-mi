@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class UI extends JFrame {
@@ -22,6 +24,8 @@ public class UI extends JFrame {
     private JButton deposit;
     private JButton withdraw;
 
+    private CreditCheckerClient creditCheckerClient;
+
 //    private JPanel[] jPanels;
 
     private class Deposit implements ActionListener {
@@ -30,10 +34,15 @@ public class UI extends JFrame {
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("hi");
             // set new value to person
-            person.setBalance(person.getBalance() + Double.parseDouble(inputText.getText()));
+//            person.setBalance(person.getBalance() + Double.parseDouble(inputText.getText()));
 
+            double amount = Double.parseDouble(inputText.getText());
             // invoke rmi method
-
+            try {
+                person = creditCheckerClient.getChecker().deposit(person, amount);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
 
             // update label with result from rmi
             balance.setText(String.valueOf(person.getBalance()));
@@ -47,7 +56,7 @@ public class UI extends JFrame {
         }
     }
 
-    public UI(Person person) throws HeadlessException {
+    public UI(Person person, CreditCheckerClient creditCheckerClient) throws HeadlessException {
 
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
@@ -75,12 +84,15 @@ public class UI extends JFrame {
 
         this.pack();
         this.setVisible(true);
+
+        this.creditCheckerClient = creditCheckerClient;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException, NotBoundException {
         Person person = new Person("Peter", "Cambridge", true, 1110.0);
 
-        UI ui = new UI(person);
+
+        UI ui = new UI(person, new CreditCheckerClient(args));
 
         Scanner scanner = new Scanner(System.in);
 

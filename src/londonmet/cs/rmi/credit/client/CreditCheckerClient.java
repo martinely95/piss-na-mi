@@ -11,20 +11,26 @@ import java.rmi.registry.Registry;
 
 public class CreditCheckerClient {
     CreditChecker checker;
+
     static Registry registry;
     String host;
 
     public CreditCheckerClient(String args[]) throws RemoteException, NotBoundException {
         host = (args.length < 1) ? Constants.DEFAULT_HOST_PORT_STRING : args[0];
         int realHostNumber = Integer.parseInt(host);
+
         registry = LocateRegistry.getRegistry(realHostNumber);
 
         checker = getLookup();
 
     }
 
-    void deposit(Person person) {
+    public CreditChecker getChecker() {
+        return checker;
+    }
 
+    void deposit(Person person, double amount) throws RemoteException {
+        checker.deposit(person, amount);
     }
 
     public static void main(String args[]) throws RemoteException, NotBoundException {
