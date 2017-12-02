@@ -32,36 +32,36 @@ public class UI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            // set new value to person
-            double amount = Double.parseDouble(inputText.getText());
+            operateWithMoney(true);
 
-            // invoke rmi method
-            try {
-                person = creditCheckerClient.getChecker().deposit(person, amount);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-
-            // update label with result from rmi
-            balance.setText(String.valueOf(person.getBalance()));
         }
     }
+
+    private void operateWithMoney(boolean deposit) {
+        // set new value to person
+        double amount = Double.parseDouble(inputText.getText());
+
+        // invoke rmi method
+        try {
+            if (deposit) {
+                person = creditCheckerClient.getChecker().deposit(person, amount);
+            } else {
+                person = creditCheckerClient.getChecker().withdrawal(person, amount);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        // update label with result from rmi
+        balance.setText(String.valueOf(person.getBalance()));
+        creditRating.setText(String.valueOf(person.getCreditRating()));
+    }
+
     private class Withdraw implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            // set new value to person
-            double amount = Double.parseDouble(inputText.getText());
-
-            // invoke rmi method
-            try {
-                person = creditCheckerClient.getChecker().withdrawal(person, amount);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-
-            // update label with result from rmi
-            balance.setText(String.valueOf(person.getBalance()));
+            operateWithMoney(false);
         }
     }
 
