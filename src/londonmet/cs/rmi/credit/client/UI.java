@@ -11,7 +11,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class UI extends JFrame {
 
@@ -106,6 +105,7 @@ public class UI extends JFrame {
 
         this.pack();
         this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.persons = persons;
 
@@ -146,7 +146,7 @@ public class UI extends JFrame {
 
         UI ui = new UI(persons, new CreditCheckerClient(args));
 
-        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner(System.in);
 
     }
 }
