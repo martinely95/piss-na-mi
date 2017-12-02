@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class UI extends JFrame {
 
-    private final PersonUI personUI = new PersonUI();
+    private List<PersonUI> personUIs = new ArrayList<>();
     private Person[] persons;
 
     private CreditCheckerClient creditCheckerClient;
@@ -60,7 +60,7 @@ public class UI extends JFrame {
 //        Person person = new Person("Peter", "Cambridge", true, 1110.0);
 
         // set new value to persons
-        double amount = Double.parseDouble(personUI.inputText.getText());
+        double amount = Double.parseDouble(personUi.inputText.getText());
 
         // invoke rmi method
         try {
@@ -74,8 +74,8 @@ public class UI extends JFrame {
         }
 
         // update label with result from rmi
-        personUI.balance.setText(String.valueOf(personUi.person.getBalance()));
-        personUI.creditRating.setText(String.valueOf(personUi.person.getCreditRating()));
+        personUi.balance.setText(String.valueOf(personUi.person.getBalance()));
+        personUi.creditRating.setText(String.valueOf(personUi.person.getCreditRating()));
     }
 
     private class Withdraw implements ActionListener {
@@ -96,8 +96,10 @@ public class UI extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
         for (Person person : persons) {
-
-            JPanel jPanel = createjPanel(person);
+            PersonUI personUI = new PersonUI();
+            personUI.person = person;
+            personUIs.add(personUI);
+            JPanel jPanel = createjPanel(personUI);
             jPanels.add(jPanel);
             this.add(jPanel);
         }
@@ -110,8 +112,9 @@ public class UI extends JFrame {
         this.creditCheckerClient = creditCheckerClient;
     }
 
-    private JPanel createjPanel(Person person) {
+    private JPanel createjPanel(PersonUI personUI) {
         JPanel jPanel = new JPanel();
+        Person person = personUI.getPerson();
 
         jPanel.add(personUI.name = new JLabel(person.getFirstName()));
         jPanel.add(personUI.secondName = new JLabel(person.getLastName()));
