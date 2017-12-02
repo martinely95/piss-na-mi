@@ -32,11 +32,9 @@ public class UI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("hi");
             // set new value to person
-//            person.setBalance(person.getBalance() + Double.parseDouble(inputText.getText()));
-
             double amount = Double.parseDouble(inputText.getText());
+
             // invoke rmi method
             try {
                 person = creditCheckerClient.getChecker().deposit(person, amount);
@@ -52,7 +50,18 @@ public class UI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("hi 2");
+            // set new value to person
+            double amount = Double.parseDouble(inputText.getText());
+
+            // invoke rmi method
+            try {
+                person = creditCheckerClient.getChecker().withdrawal(person, amount);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+
+            // update label with result from rmi
+            balance.setText(String.valueOf(person.getBalance()));
         }
     }
 
