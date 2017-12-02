@@ -52,11 +52,11 @@ public class UI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
 
-            operateWithMoney(true, this.personUI.getPerson());
+            operateWithMoney(true, this.personUI);
         }
     }
 
-    private void operateWithMoney(boolean deposit, Person person) {
+    private void operateWithMoney(boolean deposit, PersonUI personUi) {
 //        Person person = new Person("Peter", "Cambridge", true, 1110.0);
 
         // set new value to persons
@@ -65,17 +65,17 @@ public class UI extends JFrame {
         // invoke rmi method
         try {
             if (deposit) {
-                person = creditCheckerClient.getChecker().deposit(person, amount);
+                personUi.person = creditCheckerClient.getChecker().deposit(personUi.person, amount);
             } else {
-                person = creditCheckerClient.getChecker().withdrawal(person, amount);
+                personUi.person = creditCheckerClient.getChecker().withdrawal(personUi.person, amount);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
         // update label with result from rmi
-        personUI.balance.setText(String.valueOf(person.getBalance()));
-        personUI.creditRating.setText(String.valueOf(person.getCreditRating()));
+        personUI.balance.setText(String.valueOf(personUi.person.getBalance()));
+        personUI.creditRating.setText(String.valueOf(personUi.person.getCreditRating()));
     }
 
     private class Withdraw implements ActionListener {
@@ -87,7 +87,7 @@ public class UI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            operateWithMoney(false, this.personUI.getPerson());
+            operateWithMoney(false, this.personUI);
         }
     }
 
@@ -121,10 +121,10 @@ public class UI extends JFrame {
         jPanel.add(personUI.inputText = new JTextField(5));
         jPanel.add(personUI.deposit = new JButton("Deposit"));
         jPanel.add(personUI.withdraw = new JButton("Withdraw"));
-        personUI.person = person;
 
         personUI.deposit.addActionListener(new Deposit(personUI));
         personUI.withdraw.addActionListener(new Withdraw(personUI));
+        personUI.person = person;
 
         jPanel.setVisible(true);
         return jPanel;
