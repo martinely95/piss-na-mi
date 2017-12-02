@@ -32,6 +32,7 @@ public class Person implements java.io.Serializable {
 
     public void setBalance(double balance) {
         this.balance = balance;
+        creditRating = balance > 0;
     }
 
     public double getBalance() {
